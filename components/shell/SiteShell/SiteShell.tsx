@@ -7,7 +7,11 @@ import { ActionIcon, AppShell, Group, NavLink, ScrollArea, Tooltip } from '@mant
 import { useDisclosure, useHotkeys, useLocalStorage } from '@mantine/hooks';
 import config from '@/config';
 import { isDocsRoute, normalizeRoute } from '@/lib/docs/routes';
-import { SIDEBAR_COLLAPSED_ATTRIBUTE, SIDEBAR_COLLAPSED_KEY } from '@/lib/docs/sidebar';
+import {
+  isStoredCollapsed,
+  SIDEBAR_COLLAPSED_ATTRIBUTE,
+  SIDEBAR_COLLAPSED_KEY,
+} from '@/lib/docs/sidebar';
 import { isMenu, type DocsNode, type TopNavEntry } from '@/lib/docs/types';
 import { ColorSchemeControl } from '../../ColorSchemeControl/ColorSchemeControl';
 import { MantineNavBar } from '../../MantineNavBar/MantineNavBar';
@@ -83,10 +87,11 @@ export function SiteShell({ tree, nav, banner, docsFooter, siteFooter, children 
     defaultValue: false,
     getInitialValueInEffect: true,
   });
-  // The pre-paint attribute (lib/docs/sidebar.ts) goes once the stored "collapsed" is committed:
-  // AppShell's own variables hold the sidebar closed from then on.
+  // The pre-paint attribute (lib/docs/sidebar.ts) goes once the stored "collapsed" is committed,
+  // when AppShell's own variables hold the sidebar closed, or once storage no longer says
+  // "collapsed" (another tab expanded it between the script and this effect).
   useEffect(() => {
-    if (sidebarCollapsed) {
+    if (sidebarCollapsed || !isStoredCollapsed()) {
       document.documentElement.removeAttribute(SIDEBAR_COLLAPSED_ATTRIBUTE);
     }
   }, [sidebarCollapsed]);

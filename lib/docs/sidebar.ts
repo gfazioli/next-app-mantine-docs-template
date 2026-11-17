@@ -15,3 +15,12 @@ export const SIDEBAR_COLLAPSED_SCRIPT = `try{if(localStorage.getItem(${JSON.stri
 )})==='true')document.documentElement.setAttribute(${JSON.stringify(
   SIDEBAR_COLLAPSED_ATTRIBUTE
 )},'')}catch(e){}`;
+
+/** What the pre-paint script reads: whether storage says "collapsed" right now. */
+export function isStoredCollapsed(): boolean {
+  try {
+    return localStorage.getItem(SIDEBAR_COLLAPSED_KEY) === 'true';
+  } catch {
+    return false;
+  }
+}
