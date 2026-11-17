@@ -73,6 +73,16 @@ export default {
     },
   },
   /**
+   * Links shared by the header, the sidebar and the footers
+   */
+  links: {
+    discord: 'https://discord.com/invite/wbH82zuWMN',
+    twitter: 'https://twitter.com/gfazioli',
+    coffee: 'https://donate.stripe.com/fZu4gy4Tn3b1dgudGx0co00',
+    author: 'https://gfazioli.github.io/',
+  },
+
+  /**
    * GitHub API configuration
    * @see https://docs.github.com/en/rest/reference/repos#releases
    *

@@ -1,10 +1,15 @@
+/* The banner's height, which the shell adds to the fixed header's while the banner is shown */
+:global(:root) {
+  --site-banner-height: rem(36px);
+}
+
 .banner {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: rem(36px);
-  padding: rem(6px) rem(44px);
+  height: var(--site-banner-height);
+  padding-inline: rem(44px);
   color: var(--mantine-color-white);
   background-image: linear-gradient(
     90deg,
@@ -18,7 +23,11 @@
 }
 
 .text {
+  min-width: 0;
+  overflow: hidden;
   text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
   & a {
     color: inherit;

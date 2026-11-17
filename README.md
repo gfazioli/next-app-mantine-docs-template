@@ -2,8 +2,13 @@
 
 <div align="center">
 
-[<kbd> <br/> ❤️ If this template has been useful to you or your team, please consider becoming a sponsor <br/> </kbd>](https://github.com/sponsors/gfazioli?o=esc)
+[<kbd> <br/> ❤️ If this template has been useful to you or your team, please consider becoming a sponsor <br/> </kbd>](https://github.com/sponsors/gfazioli?o=esc)
 
+</div>
+
+<div align="center">
+  <p><img src="https://raw.githubusercontent.com/gfazioli/gfazioli/master/glancecard/next-app-mantine-docs-template.svg" width="880" alt="next-app-mantine-docs-template at a glance, refreshed daily: commits, releases, stars, issues and pull requests, a year of commit activity, the weekly rhythm, languages, latest commits and releases, contributors" /><br>
+  <sub>Made with <a href="https://github.com/gfazioli/glancecard">glancecard</a> · refreshed daily</sub></p>
 </div>
 
 A [Next.js](https://nextjs.org/) App Router template for MDX documentation sites, built entirely on [Mantine](https://mantine.dev/): no documentation framework in between. The pages are compiled by [`@next/mdx`](https://nextjs.org/docs/app/guides/mdx), the MDX loader Next.js maintains itself, and every piece of the interface is a Mantine component.
@@ -45,7 +50,7 @@ Copy `content/` and `app/_meta.tsx`, and change `from 'nextra/components'` to `f
 
 <div align="center">
 
-[<kbd> <br/> ❤️ If this component has been useful to you or your team, please consider becoming a sponsor <br/> </kbd>](https://github.com/sponsors/gfazioli?o=esc)
+[<kbd> <br/> ❤️ If this template has been useful to you or your team, please consider becoming a sponsor <br/> </kbd>](https://github.com/sponsors/gfazioli?o=esc)
 
 </div>
 

@@ -36,7 +36,7 @@ export function Banner({ storageKey, children }: BannerProps) {
           __html: `try{if(localStorage.getItem(${JSON.stringify(key)})==='true')document.documentElement.setAttribute('data-banner-dismissed','')}catch(e){}`,
         }}
       />
-      <Box className={classes.banner} role="region" aria-label="Announcement">
+      <Box className={classes.banner} role="region" aria-label="Announcement" data-site-banner>
         <Text size="sm" fw={500} className={classes.text}>
           {children}
         </Text>
