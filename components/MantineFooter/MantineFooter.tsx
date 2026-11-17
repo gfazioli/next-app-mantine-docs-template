@@ -20,6 +20,7 @@ import {
   IconMailHeart,
 } from '@tabler/icons-react';
 import packageJson from '../../package.json';
+import { EngravedDivider } from '../EngravedDivider/EngravedDivider';
 import { AnimateBadge } from './AnimateBadge';
 import { apps, highlights, mantineComponentCategories, resources } from './links';
 import classes from './MantineFooter.module.css';
@@ -157,7 +158,7 @@ export const MantineFooter = () => {
           </Grid.Col>
         </Grid>
 
-        <Divider my="xl" className={classes.lastDivider} />
+        <EngravedDivider my="xl" />
 
         {/* Second tier — Mantine Components grouped by category */}
         <Stack gap="md">
@@ -174,7 +175,7 @@ export const MantineFooter = () => {
           </Grid>
         </Stack>
 
-        <Divider my={16} className={classes.lastDivider} />
+        <EngravedDivider my={16} />
 
         <Group justify="flex-end">
           <Group justify="right">

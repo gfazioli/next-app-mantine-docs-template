@@ -31,7 +31,9 @@ A **Next.js 16 + Mantine 9** template for MDX documentation sites, with no docum
 
 ### The interface (`components/shell/`, `components/docs/`)
 
-- **`SiteShell`**: Mantine `AppShell`: header (`MantineNavBar`, links from `app/_meta.tsx`), navbar with the `SidebarTree` (`NavLink`) on `/docs` routes and, on phones, everywhere behind the burger.
+- **`SiteShell`**: Mantine `AppShell`: header (`MantineNavBar`, links from `app/_meta.tsx`), navbar with the `SidebarTree` (`NavLink`) on `/docs` routes and, on phones, everywhere behind the burger. Docs pages get the compact `DocsFooter` (a server component; its Docs column is the sidebar's top level), every other page the full `MantineFooter`: the root layout renders both and the shell picks one.
+- **Release banner**: inside the fixed `AppShell.Header`, above the 60px navigation row, so it stays in view (Nextra's is sticky only on phones). A `:has([data-site-banner])` rule in `SiteShell.module.css` adds its height to `--app-shell-header-height`/`-offset`; a dismissed banner is hidden before the first paint by its own script, so the header is 60px from the start.
+- **Sidebar collapse** (desktop): the header button or ⌘B / Ctrl+B sets `collapsed.desktop`, kept in `localStorage`; a collapsed navbar is also `visibility: hidden`, out of the tab order. No flash on reload: see `lib/docs/sidebar.ts`. The pre-paint CSS copies the variables AppShell sets for a collapsed navbar; `SiteShell.test.tsx` fails if Mantine changes them.
 - **`DocsPage`**: breadcrumbs, the `<article data-docs-article data-pagefind-body>`, previous/next, and the table of contents in a sticky column (not an `AppShell.Aside`, so the footer runs the full width right of the sidebar).
 - **`DocsToc`**: Mantine `TableOfContents` over the rendered headings (`use-scroll-spy`); an element with `data-toc-entry` / `data-toc-depth` / `data-toc-value` joins it, and `window.dispatchEvent(new Event('docs:toc-refresh'))` re-reads the page (the release notes do both).
 - **Code blocks**: `components/docs/CodeBlock` highlights with Shiki **on the server at build time** (dual theme, `--shiki-light` / `--shiki-dark`, picked by `data-mantine-color-scheme` in CSS) and hands the HTML to Mantine's `CodeHighlight` / `CodeHighlightTabs` through a synchronous per-block adapter: no highlighter ships to the browser. `shiki` is in Next's default server externals.
@@ -47,6 +49,7 @@ A **Next.js 16 + Mantine 9** template for MDX documentation sites, with no docum
 ### Theme
 
 - One colour scheme system, Mantine's (`config.head.mantine.defaultColorScheme`). No next-themes.
+- `cursorType: 'pointer'` in `theme.ts`: Mantine's default (`'default'`) gives its interactive components, links rendered by them included (`NavLink`, `Anchor`, the table of contents), the arrow cursor.
 - The mantine.dev look: Outfit for headings through `next/font` (`--font-outfit`), the system stack for text, Mantine's body colours.
 
 ### CSS import order

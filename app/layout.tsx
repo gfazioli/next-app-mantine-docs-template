@@ -14,11 +14,14 @@ import { ColorSchemeScript, mantineHtmlProps, MantineProvider } from '@mantine/c
 // !! End of important imports !!
 
 import { Link } from '@/components/Link/Link';
+import { MantineFooter } from '@/components/MantineFooter/MantineFooter';
 import { Banner } from '@/components/shell/Banner/Banner';
+import { DocsFooter } from '@/components/shell/DocsFooter/DocsFooter';
 import { DocsSearch } from '@/components/shell/DocsSearch/DocsSearch';
 import { SiteShell } from '@/components/shell/SiteShell/SiteShell';
 import config from '@/config';
 import { getDocs } from '@/lib/docs/content';
+import { SIDEBAR_COLLAPSED_SCRIPT } from '@/lib/docs/sidebar';
 import { getTopNav } from '@/lib/docs/top-nav';
 import pack from '../package.json';
 import { theme } from '../theme';
@@ -50,12 +53,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           defaultColorScheme={head.mantine.defaultColorScheme}
         />
         <link rel="shortcut icon" href={`${basePath}/favicon.svg`} />
+        <script dangerouslySetInnerHTML={{ __html: SIDEBAR_COLLAPSED_SCRIPT }} />
       </head>
       <body>
         <MantineProvider theme={theme} defaultColorScheme={head.mantine.defaultColorScheme}>
           <SiteShell
             tree={tree}
             nav={getTopNav()}
+            docsFooter={<DocsFooter tree={tree} />}
+            siteFooter={<MantineFooter />}
             banner={
               <Banner storageKey={`release-notes-${pack.version}`}>
                 ✨ v{pack.version} Released -{' '}

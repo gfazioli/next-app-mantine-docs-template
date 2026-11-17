@@ -1,15 +1,15 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { IconBrandDiscord, IconBrandGithub } from '@tabler/icons-react';
 import { ActionIcon, AppShell, Group, NavLink, ScrollArea, Tooltip } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { useDisclosure, useHotkeys, useLocalStorage } from '@mantine/hooks';
 import config from '@/config';
 import { isDocsRoute, normalizeRoute } from '@/lib/docs/routes';
+import { SIDEBAR_COLLAPSED_ATTRIBUTE, SIDEBAR_COLLAPSED_KEY } from '@/lib/docs/sidebar';
 import { isMenu, type DocsNode, type TopNavEntry } from '@/lib/docs/types';
 import { ColorSchemeControl } from '../../ColorSchemeControl/ColorSchemeControl';
-import { MantineFooter } from '../../MantineFooter/MantineFooter';
 import { MantineNavBar } from '../../MantineNavBar/MantineNavBar';
 import { SidebarTree } from '../SidebarTree/SidebarTree';
 import classes from './SiteShell.module.css';
@@ -18,6 +18,10 @@ export interface SiteShellProps {
   tree: DocsNode[];
   nav: TopNavEntry[];
   banner?: React.ReactNode;
+  /** The footer under docs pages */
+  docsFooter: React.ReactNode;
+  /** The footer under every other page */
+  siteFooter: React.ReactNode;
   children: React.ReactNode;
 }
 
@@ -56,13 +60,15 @@ function MobileNav({ nav }: { nav: TopNavEntry[] }) {
 
 /**
  * The page frame, on Mantine's `AppShell`:
- * - the header on every page;
- * - the docs sidebar on `/docs` routes (on a phone, behind the header's menu button, on every page).
+ * - the header on every page, with the release banner above the navigation, always in view;
+ * - the docs sidebar on `/docs` routes (on a phone, behind the header's menu button, on every page),
+ *   which the header button or ⌘B / Ctrl+B collapses on desktop, remembered across visits;
+ * - a compact footer under docs pages, the full site footer elsewhere.
  *
  * The table of contents is not an `AppShell.Aside`: it lives in the docs page, as a sticky column,
  * so the footer can run the whole width right of the sidebar, as on mantine.dev.
  */
-export function SiteShell({ tree, nav, banner, children }: SiteShellProps) {
+export function SiteShell({ tree, nav, banner, docsFooter, siteFooter, children }: SiteShellProps) {
   const pathname = usePathname();
   const route = normalizeRoute(pathname);
   const isDocs = isDocsRoute(route);
@@ -72,21 +78,48 @@ export function SiteShell({ tree, nav, banner, children }: SiteShellProps) {
     close();
   }, [pathname, close]);
 
+  const [sidebarCollapsed, setSidebarCollapsed] = useLocalStorage({
+    key: SIDEBAR_COLLAPSED_KEY,
+    defaultValue: false,
+    getInitialValueInEffect: true,
+  });
+  // The pre-paint attribute (lib/docs/sidebar.ts) goes once the stored "collapsed" is committed:
+  // AppShell's own variables hold the sidebar closed from then on.
+  useEffect(() => {
+    if (sidebarCollapsed) {
+      document.documentElement.removeAttribute(SIDEBAR_COLLAPSED_ATTRIBUTE);
+    }
+  }, [sidebarCollapsed]);
+
+  const toggleSidebar = useCallback(
+    () => setSidebarCollapsed((collapsed) => !collapsed),
+    [setSidebarCollapsed]
+  );
+  useHotkeys(isDocs ? [['mod+B', toggleSidebar]] : []);
+
+  const desktopCollapsed = !isDocs || sidebarCollapsed;
+
   return (
     <AppShell
       header={{ height: 60 }}
       navbar={{
         width: 280,
         breakpoint: 'md',
-        collapsed: { mobile: !opened, desktop: !isDocs },
+        collapsed: { mobile: !opened, desktop: desktopCollapsed },
       }}
-      classNames={{ header: classes.header }}
+      classNames={{ header: classes.header, navbar: classes.navbar }}
     >
       <AppShell.Header>
-        <MantineNavBar nav={nav} burgerOpened={opened} onBurgerClick={toggle} />
+        {banner}
+        <MantineNavBar
+          nav={nav}
+          burgerOpened={opened}
+          onBurgerClick={toggle}
+          sidebar={isDocs ? { collapsed: sidebarCollapsed, onToggle: toggleSidebar } : undefined}
+        />
       </AppShell.Header>
 
-      <AppShell.Navbar>
+      <AppShell.Navbar data-desktop-collapsed={desktopCollapsed || undefined}>
         <AppShell.Section hiddenFrom="md" className={classes.mobileNav}>
           <MobileNav nav={nav} />
         </AppShell.Section>
@@ -116,7 +149,7 @@ export function SiteShell({ tree, nav, banner, children }: SiteShellProps) {
               <Tooltip label="Discord">
                 <ActionIcon
                   component="a"
-                  href="https://discord.com/invite/wbH82zuWMN"
+                  href={config.links.discord}
                   target="_blank"
                   rel="noopener noreferrer"
                   variant="subtle"
@@ -134,9 +167,8 @@ export function SiteShell({ tree, nav, banner, children }: SiteShellProps) {
       </AppShell.Navbar>
 
       <AppShell.Main className={classes.main}>
-        {banner}
         {children}
-        <MantineFooter />
+        {isDocs ? docsFooter : siteFooter}
       </AppShell.Main>
     </AppShell>
   );
