@@ -1,0 +1,73 @@
+---
+description: "A Next.js App Router starter for MDX documentation built entirely on Mantine 9: what it includes, how the folders are organised and the scripts it ships with."
+---
+
+import { Cards, FileTree } from '@/components/docs';
+import { FileTreeLabel } from '@/components/FileTreeLabel';
+import { IconBook, IconComponents, IconSearch } from '@tabler/icons-react';
+
+# Introduction
+
+This is a starter for documentation sites made with [Next.js](https://nextjs.org/) (App Router),
+[Mantine](https://mantine.dev/) and MDX, and nothing else: no documentation framework sits in
+between. The pages are compiled by [`@next/mdx`](https://nextjs.org/docs/app/guides/mdx), the MDX
+loader Next.js maintains itself, and every piece of the interface is a Mantine component.
+
+<Cards num={3}>
+  <Cards.Card arrow icon={<IconBook />} title="Writing pages" href="/docs/guides/writing-pages" />
+  <Cards.Card arrow icon={<IconComponents />} title="Components" href="/docs/components" />
+  <Cards.Card arrow icon={<IconSearch />} title="Search" href="/docs/guides/search" />
+</Cards>
+
+## Features
+
+- **Mantine all the way**: the frame is `AppShell`, the sidebar `NavLink`, the table of contents
+  `TableOfContents`, the search `Spotlight`, the code blocks `CodeHighlight`, the 404 page
+  `EmptyState`
+- **Code highlighted at build time** with [Shiki](https://shiki.style/), in light and dark, and
+  shown by Mantine's `CodeHighlight`: no highlighter is downloaded by the browser
+- **Search** with [Pagefind](https://pagefind.app/), over the prerendered pages, plus a server
+  search API
+- **Nextra-compatible content**: the same `content/` folder, the same `_meta` files and the same
+  components (`Callout`, `Cards`, `FileTree`, `Steps`, `Tabs`, `ImageZoom`), imported from
+  `@/components/docs`
+- **Two deploy modes**: a server build (Vercel, any Node host) or a fully static export (GitHub
+  Pages), with an optional base path
+- TypeScript, [Storybook](https://storybook.js.org/), [Jest](https://jestjs.io/) with
+  [React Testing Library](https://testing-library.com/docs/react-testing-library/intro),
+  [oxlint](https://oxc.rs/docs/guide/usage/linter), [oxfmt](https://oxc.rs/) and
+  [Stylelint](https://stylelint.io/)
+
+## Folder structure
+
+<FileTree>
+  <FileTree.Folder name="app" defaultOpen>
+    <FileTree.Folder name={<FileTreeLabel type="folder" name="api">Server API routes</FileTreeLabel>} />
+    <FileTree.Folder name="docs" defaultOpen>
+      <FileTree.File name={<FileTreeLabel type="file" name="[[...slug]]/page.tsx">Every docs page</FileTreeLabel>} />
+    </FileTree.Folder>
+    <FileTree.File name={<FileTreeLabel type="file" name="_meta.tsx">Header links</FileTreeLabel>} />
+    <FileTree.File name={<FileTreeLabel type="file" name="layout.tsx">Main layout</FileTreeLabel>} />
+  </FileTree.Folder>
+  <FileTree.Folder name="components" defaultOpen>
+    <FileTree.Folder name={<FileTreeLabel type="folder" name="docs">Components for pages</FileTreeLabel>} />
+    <FileTree.Folder name={<FileTreeLabel type="folder" name="shell">Header, sidebar, search</FileTreeLabel>} />
+  </FileTree.Folder>
+  <FileTree.Folder name={<FileTreeLabel type="folder" name="config">Most of the config is here</FileTreeLabel>} />
+  <FileTree.Folder name={<FileTreeLabel type="folder" name="content">MDX pages and _meta files</FileTreeLabel>} />
+  <FileTree.Folder name={<FileTreeLabel type="folder" name="lib">The docs engine</FileTreeLabel>} />
+</FileTree>
+
+Start from `config/index.ts`: the site's metadata, the GitHub repository, the edit links and the
+search settings are there.
+
+## Scripts
+
+| Script | What it does |
+| ------ | ------------ |
+| `yarn dev` | The dev server |
+| `yarn build` | The production build, then the Pagefind index |
+| `yarn build:static` | A static export to `out/`, with its Pagefind index |
+| `yarn test` | Formatting, lint, types and Jest |
+| `yarn storybook` | Storybook on port 6006 |
+| `yarn analyze` | The bundle analysis |

@@ -1,0 +1,66 @@
+---
+description: "How pages are written and ordered: MDX files under content/, _meta files for order and titles, front matter, page options and imports."
+---
+
+import { Callout } from '@/components/docs';
+
+# Writing pages
+
+Every `.mdx` file under `content/` is a page, served under `/docs`: `content/guides/search.mdx`
+is `/docs/guides/search`, and an `index.mdx` is its folder's own path. Each page is prerendered
+at build time.
+
+## Order and titles: `_meta`
+
+A `_meta.ts` (or `_meta.tsx`) file orders the pages of its folder and names them, in Nextra's
+format:
+
+```ts filename="content/_meta.ts" copy
+export default {
+  index: 'Introduction', // a title
+  '---': { type: 'separator', title: 'Guides' }, // a separator, with an optional title
+  components: '', // empty: the page's own title
+  guides: 'Guides', // a folder
+  github: { title: 'GitHub', href: 'https://github.com/…' }, // an external link
+  draft: { display: 'hidden' }, // served, but not in the sidebar
+  versioning: { theme: { toc: false } }, // page options
+};
+```
+
+Pages left out of `_meta` follow the listed ones, alphabetically.
+
+A page's title comes from `_meta`; when it is empty, from the front matter `title`, then from the
+page's first `#` heading, then from its file name.
+
+## Page options
+
+Set with `theme` in `_meta`:
+
+| Option | Default | Effect |
+| ------ | ------- | ------ |
+| `toc` | `true` | The table of contents on the right |
+| `pagination` | `true` | The previous and next links under the page |
+| `breadcrumb` | `true` | The breadcrumbs above a nested page |
+| `layout` | `'default'` | `'full'` drops the table of contents and uses the whole width |
+
+## Front matter and metadata
+
+The YAML front matter feeds the page's metadata: `description` becomes its meta description.
+
+```mdx copy
+---
+description: "What this page is about, in one sentence."
+---
+```
+
+A page can also export Next.js `metadata` itself, which wins over the front matter.
+
+## Imports
+
+A page imports what it needs, like any module: Mantine components, your own components from
+`@/components`, and the docs components from `@/components/docs`.
+
+<Callout type="info">
+  The header links come from `app/_meta.tsx`, in the same format: `type: 'page'` for a link,
+  `type: 'menu'` with `items` for a dropdown.
+</Callout>

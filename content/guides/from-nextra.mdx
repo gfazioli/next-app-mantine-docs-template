@@ -1,0 +1,42 @@
+---
+description: "Moving a Nextra 4 site to this template: what stays as it is, the one import to change, and the few Nextra features that need a replacement."
+---
+
+import { Steps } from '@/components/docs';
+
+# Moving from Nextra
+
+The content of a Nextra 4 site moves as it is: the `content/` folder, the `_meta` files and the
+MDX pages keep their format, and the URLs stay the same.
+
+<Steps>
+
+### Copy the content
+
+Copy `content/` and `app/_meta.tsx` over the template's.
+
+### Change one import
+
+In every page and component, `from 'nextra/components'` becomes `from '@/components/docs'`.
+`Callout`, `Cards`, `FileTree`, `Steps`, `Tabs` and `ImageZoom` keep their names and props.
+
+### Move your own components
+
+Copy `components/` entries the pages import, and replace any use of `nextra-theme-docs`
+(`useTheme` becomes Mantine's `useMantineColorScheme`).
+
+### Build and compare
+
+Run `yarn build` and compare the sitemap and the Pagefind page count with the Nextra site's.
+
+</Steps>
+
+## What is different
+
+| Nextra | Here |
+| ------ | ---- |
+| `nextra/components` | `@/components/docs` |
+| `export const metadata = { toc: … }` | Not needed: the table of contents reads the page, and an element with `data-toc-entry` joins it |
+| `useTheme` (next-themes) | `useMantineColorScheme`: there is one colour scheme, Mantine's |
+| `<Banner>`, `<Head>`, `<Layout>` | The template's `app/layout.tsx` |
+| `.md` pages | `.mdx` only |

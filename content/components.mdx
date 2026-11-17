@@ -1,0 +1,140 @@
+---
+description: "The components a docs page can use, with Nextra's names and props on Mantine: Callout, Cards, FileTree, Steps, Tabs, ImageZoom and code blocks."
+---
+
+import { Callout, Cards, FileTree, ImageZoom, Steps, Tabs } from '@/components/docs';
+import { IconBrandGithub, IconBrandMantine } from '@tabler/icons-react';
+import cover from '@/public/mantine+nextjs+nextra-template.png';
+
+# Components
+
+Every component below is imported from `@/components/docs`. Names and props are Nextra's, so a
+page written for Nextra keeps working once its import says `@/components/docs` instead of
+`nextra/components`.
+
+## Callout
+
+A Mantine `Alert` with a type, and an optional `emoji` (any node) in place of the icon.
+
+<Callout>A default callout, for a tip.</Callout>
+
+<Callout type="info">An `info` callout.</Callout>
+
+<Callout type="warning">A `warning` callout.</Callout>
+
+<Callout type="error">An `error` callout.</Callout>
+
+<Callout type="important" emoji="🚀">An `important` callout with an emoji.</Callout>
+
+```mdx copy
+<Callout type="warning">A `warning` callout.</Callout>
+
+<Callout type="important" emoji="🚀">An `important` callout with an emoji.</Callout>
+```
+
+GitHub's alert syntax (`> [!NOTE]`) becomes a callout too: see [Markdown](/docs/markdown).
+
+## Cards
+
+Mantine `Card`s in a `SimpleGrid`; `num` sets the columns.
+
+<Cards num={2}>
+  <Cards.Card arrow icon={<IconBrandMantine />} title="Mantine" href="https://mantine.dev/" />
+  <Cards.Card arrow icon={<IconBrandGithub />} title="The repository" href="https://github.com/gfazioli/next-app-mantine-docs-template" />
+</Cards>
+
+```mdx copy
+<Cards num={2}>
+  <Cards.Card arrow icon={<IconBrandMantine />} title="Mantine" href="https://mantine.dev/" />
+  <Cards.Card arrow icon={<IconBrandGithub />} title="The repository" href="…" />
+</Cards>
+```
+
+## Tabs
+
+Mantine `Tabs`, with one label per `<Tabs.Tab>`.
+
+<Tabs items={['yarn', 'npm', 'pnpm']}>
+  <Tabs.Tab>
+    ```bash
+    yarn add @mantine/core @mantine/hooks
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```bash
+    npm install @mantine/core @mantine/hooks
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```bash
+    pnpm add @mantine/core @mantine/hooks
+    ```
+  </Tabs.Tab>
+</Tabs>
+
+## FileTree
+
+<FileTree>
+  <FileTree.Folder name="content" defaultOpen>
+    <FileTree.File name="_meta.ts" />
+    <FileTree.File name="index.mdx" />
+    <FileTree.Folder name="guides">
+      <FileTree.File name="_meta.ts" />
+      <FileTree.File name="search.mdx" />
+    </FileTree.Folder>
+  </FileTree.Folder>
+</FileTree>
+
+## Steps
+
+Each `###` heading inside `<Steps>` is a numbered step.
+
+<Steps>
+
+### Write the page
+
+Add an `.mdx` file under `content/`.
+
+### List it
+
+Give it a title in the folder's `_meta.ts`.
+
+### Build
+
+Run `yarn build`: the page is prerendered and indexed for search.
+
+</Steps>
+
+## ImageZoom
+
+Takes `next/image`'s props; a click opens the image full size in a Mantine `Modal`. Import the
+image rather than giving its path: the import carries its size, and the base path of a static
+export.
+
+<ImageZoom src={cover} alt="Mantine and Next.js template" style={{ width: 360, height: 'auto' }} />
+
+```mdx copy
+import cover from '@/public/cover.png';
+
+<ImageZoom src={cover} alt="Cover" style={{ width: 360, height: 'auto' }} />
+```
+
+## Code blocks
+
+Mantine's `CodeHighlight`, highlighted by Shiki at build time. The fence meta Nextra understands
+works here: `filename="…"` opens a file tab, `{2}` highlights lines, `showLineNumbers` numbers them.
+Every block has a copy button, and a block longer than 30 lines opens collapsed.
+
+```tsx filename="components/Hello.tsx" {4} showLineNumbers
+import { Button } from '@mantine/core';
+
+export function Hello() {
+  return <Button variant="light">Hello Mantine</Button>;
+}
+```
+
+````md
+```tsx filename="components/Hello.tsx" {4} showLineNumbers
+…
+```
+````

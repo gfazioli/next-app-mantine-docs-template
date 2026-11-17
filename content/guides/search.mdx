@@ -1,0 +1,28 @@
+---
+description: "How search works: Pagefind indexes the prerendered pages after the build, and Mantine's Spotlight searches the index in the browser."
+---
+
+# Search
+
+Search uses [Pagefind](https://pagefind.app/). After the build it indexes the prerendered HTML of
+the docs pages (only the article: the header, the sidebar and the code blocks are left out) into
+`/_pagefind/`. The search box is Mantine's `Spotlight`, opened with ⌘K or `/`; it loads Pagefind
+from the index on the first search, so a page that is never searched downloads nothing.
+
+## Building the index
+
+`yarn build` runs `next build`, then Pagefind:
+
+```bash copy
+yarn build
+```
+
+For a server build the pages are gathered by `scripts/pagefind-site.mjs`, which reads them from
+either of the two places Next.js writes them; for a static export (`yarn build:static`) Pagefind
+indexes `out/` directly.
+
+Under `yarn dev` the search finds nothing until a build has run once.
+
+## The server search API
+
+A server build also answers `GET /api/search?q=…` with the same results: see [API](/docs/api).

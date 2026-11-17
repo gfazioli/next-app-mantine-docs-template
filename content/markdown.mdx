@@ -1,0 +1,72 @@
+---
+description: "GitHub alert syntax in MDX pages: how NOTE, TIP, IMPORTANT, WARNING and CAUTION blocks become Mantine callouts, and where that happens."
+---
+
+# Markdown MDX overview
+
+Pages support
+[GitHub's alert syntax](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts):
+a quote that starts with a marker becomes a `Callout`.
+
+## Usage
+
+> [!NOTE]
+>
+> Useful information that users should know, even when skimming content.
+
+```md filename="Markdown" copy
+> [!NOTE]
+>
+> Useful information that users should know, even when skimming content.
+```
+
+> [!TIP]
+>
+> Helpful advice for doing things better or more easily.
+
+```md filename="Markdown" copy
+> [!TIP]
+>
+> Helpful advice for doing things better or more easily.
+```
+
+> [!IMPORTANT]
+>
+> Key information users need to know to achieve their goal.
+
+```md filename="Markdown" copy
+> [!IMPORTANT]
+>
+> Key information users need to know to achieve their goal.
+```
+
+> [!WARNING]
+>
+> Urgent info that needs immediate user attention to avoid problems.
+
+```md filename="Markdown" copy
+> [!WARNING]
+>
+> Urgent info that needs immediate user attention to avoid problems.
+```
+
+> [!CAUTION]
+>
+> Advises about risks or negative outcomes of certain actions.
+
+```md filename="Markdown" copy
+> [!CAUTION]
+>
+> Advises about risks or negative outcomes of certain actions.
+```
+
+## How it works
+
+The `blockquote` of every page is rendered by `GitHubAlert`
+(`components/docs/Callout/GitHubAlert.tsx`): when its first line is a marker such as `[!NOTE]`,
+the quote becomes a `Callout` of that type, titled as GitHub titles it; any other quote is
+Mantine's `Blockquote`.
+
+> A plain quote, with no marker, stays a quote.
+
+To change how alerts look, edit `Callout`: alerts and `<Callout>` share it.
