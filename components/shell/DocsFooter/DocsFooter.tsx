@@ -6,30 +6,35 @@ import {
   IconCoffee,
   IconHeartFilled,
 } from '@tabler/icons-react';
-import {
-  ActionIcon,
-  Anchor,
-  Box,
-  Button,
-  Group,
-  Stack,
-  Text,
-  ThemeIcon,
-  Tooltip,
-} from '@mantine/core';
+import { ActionIcon, Anchor, Box, Button, Group, Stack, Text, Tooltip } from '@mantine/core';
 import { EngravedDivider } from '@/components/EngravedDivider/EngravedDivider';
 import { Link } from '@/components/Link/Link';
 import config from '@/config';
+import { site } from '@/config/site';
+import { HUB_URL, templateList } from '@/config/templates';
 import type { DocsNode } from '@/lib/docs/types';
 import packageJson from '../../../package.json';
-import { highlights, resources } from '../../MantineFooter/links';
+import { resources } from '../../MantineFooter/links';
 import classes from './DocsFooter.module.css';
 
 interface FooterLink {
   key: string;
   title: React.ReactNode;
   href: string;
+  /** This very site, among its siblings */
+  current?: boolean;
 }
+
+/** The three sibling templates at their live demos, then the Hub: as in the site footer. */
+const TEMPLATES: FooterLink[] = [
+  ...templateList.map((template) => ({
+    key: template.key,
+    title: `Mantine + ${template.engine}`,
+    href: template.demo,
+    current: template.key === site.key,
+  })),
+  { key: 'hub', title: 'Mantine Extensions Hub', href: HUB_URL },
+];
 
 /** The first page under a node: where a top-level folder of the sidebar leads. */
 function firstRoute(node: DocsNode): string | undefined {
@@ -68,14 +73,17 @@ function Column({
     <Stack gap={8} component="nav" aria-label={title}>
       <Text className={classes.columnTitle}>{title}</Text>
       {links.map((link) => (
-        <Anchor
-          key={link.key}
-          href={link.href}
-          className={classes.link}
-          {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : { component: Link })}
-        >
-          {link.title}
-        </Anchor>
+        <Group key={link.key} gap={8} wrap="nowrap">
+          <Anchor
+            href={link.href}
+            className={classes.link}
+            aria-current={link.current ? 'page' : undefined}
+            {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : { component: Link })}
+          >
+            {link.title}
+          </Anchor>
+          {link.current && <span className={classes.current}>This site</span>}
+        </Group>
       ))}
     </Stack>
   );
@@ -101,9 +109,10 @@ const SOCIAL = [
 
 /**
  * The footer under docs pages: compact, so the page stays the subject. The project, three short
- * columns (the docs' own sections, Mantine, more templates) and the sponsor links; the full site
- * footer, with every Mantine extension, stays on the other pages. A server component: the root
- * layout renders it and hands it to the shell.
+ * columns (the docs' own sections, the three sibling templates, Mantine) and the sponsor links;
+ * the full site footer, with every Mantine extension, stays on the other pages. Drawn with the
+ * same tokens as that one (theme/site.css). A server component: the root layout renders it and
+ * hands it to the shell.
  */
 export function DocsFooter({ tree }: { tree: DocsNode[] }) {
   return (
@@ -112,21 +121,15 @@ export function DocsFooter({ tree }: { tree: DocsNode[] }) {
         <div className={classes.top}>
           <Stack gap="sm" className={classes.brand}>
             <Group gap="xs" wrap="nowrap">
-              <ThemeIcon
-                size={32}
-                radius="md"
-                variant="gradient"
-                gradient={{ from: 'blue', to: 'cyan', deg: 135 }}
-              >
-                <IconBrandMantine size={20} />
-              </ThemeIcon>
-              <Text fw={600} ff="heading" size="lg">
-                Mantine docs template
+              <span className={classes.logo} aria-hidden="true">
+                <IconBrandMantine size={20} stroke={1.6} />
+              </span>
+              <Text fw={600} ff="heading" size="lg" className={classes.name}>
+                {site.name}
               </Text>
             </Group>
             <Text size="sm" c="dimmed" className={classes.tagline}>
-              Documentation sites on Next.js and MDX, with every piece of the interface made of
-              Mantine components.
+              {site.tagline}
             </Text>
             <Group gap={4}>
               {SOCIAL.map((item) => (
@@ -149,8 +152,8 @@ export function DocsFooter({ tree }: { tree: DocsNode[] }) {
           </Stack>
 
           <Column title="Docs" links={docsLinks(tree)} />
+          <Column title="Templates" links={TEMPLATES} external />
           <Column title="Mantine" links={resources} external />
-          <Column title="More" links={highlights} external />
         </div>
 
         <EngravedDivider my="lg" />
@@ -158,11 +161,11 @@ export function DocsFooter({ tree }: { tree: DocsNode[] }) {
         <Group justify="space-between" gap="sm" className={classes.bottom}>
           <Text size="xs" c="dimmed">
             Made with ❤️ by{' '}
-            <Anchor href={config.links.author} size="xs" inherit>
+            <Anchor href={config.links.author} size="xs" inherit className={classes.credit}>
               Undolog
             </Anchor>{' '}
             · Built with{' '}
-            <Anchor href="https://mantine.dev/" size="xs" inherit>
+            <Anchor href="https://mantine.dev/" size="xs" inherit className={classes.credit}>
               Mantine v{packageJson.dependencies['@mantine/core']}
             </Anchor>
           </Text>
@@ -171,9 +174,8 @@ export function DocsFooter({ tree }: { tree: DocsNode[] }) {
               component={Link}
               href="/#sponsors"
               size="compact-sm"
-              variant="light"
-              color="red"
-              leftSection={<IconHeartFilled size={14} />}
+              variant="default"
+              leftSection={<IconHeartFilled size={14} color="var(--mantine-color-red-6)" />}
             >
               Sponsor
             </Button>
@@ -183,9 +185,8 @@ export function DocsFooter({ tree }: { tree: DocsNode[] }) {
               target="_blank"
               rel="noopener noreferrer"
               size="compact-sm"
-              variant="light"
-              color="orange"
-              leftSection={<IconCoffee size={14} />}
+              variant="default"
+              leftSection={<IconCoffee size={14} color="var(--mantine-color-orange-6)" />}
             >
               Buy me a coffee
             </Button>

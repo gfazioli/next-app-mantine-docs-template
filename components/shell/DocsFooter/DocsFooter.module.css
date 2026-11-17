@@ -1,28 +1,15 @@
+/*
+ * The compact footer under docs pages, drawn like the site footer (MantineFooter): the same
+ * ground fading in from the page, the same monospace column titles and quiet links.
+ */
 .root {
-  /* Mantine's dimmed grey falls under 4.5:1 on this background (about 3.2 light, 4.3 dark):
-     the full site footer makes the same correction. */
-  --mantine-color-dimmed: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-1));
+  /* Mantine's dimmed grey falls under 4.5:1 on this background (about 3.2 light, 4.3 dark). */
+  --mantine-color-dimmed: var(--site-text);
 
   position: relative;
   margin-top: var(--mantine-spacing-xl);
-  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8));
-  border-top: 1px solid var(--mantine-color-default-border);
-
-  /* A thin accent along the top edge, in Mantine's blue */
-  &::before {
-    content: '';
-    position: absolute;
-    top: -1px;
-    left: 0;
-    width: min(100%, rem(480px));
-    height: 1px;
-    background-image: linear-gradient(
-      90deg,
-      var(--mantine-color-blue-filled),
-      var(--mantine-color-cyan-filled) 60%,
-      transparent
-    );
-  }
+  padding-top: rem(40px);
+  background: linear-gradient(to bottom, var(--mantine-color-body) 0, var(--site-footer) rem(96px));
 }
 
 .inner {
@@ -58,27 +45,65 @@
   }
 }
 
+/* Mantine's mark, white on a tile of its blue to cyan. */
+.logo {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: rem(32px);
+  height: rem(32px);
+  border-radius: rem(9px);
+  background: linear-gradient(135deg, var(--mantine-color-blue-7), var(--mantine-color-cyan-6));
+  color: var(--mantine-color-white);
+}
+
+.name {
+  color: var(--site-ink);
+}
+
 .tagline {
   max-width: rem(340px);
 }
 
 .columnTitle {
-  font-size: var(--mantine-font-size-xs);
+  color: var(--site-ink);
+  font-family: var(--mantine-font-family-monospace);
+  font-size: rem(11px);
   font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--mantine-color-text);
 }
 
 .link {
   width: fit-content;
+  color: var(--site-text);
   font-size: var(--mantine-font-size-sm);
-  color: var(--mantine-color-dimmed);
+  font-weight: 500;
+  transition: color 150ms ease;
 
   &:hover {
-    color: var(--mantine-color-text);
+    color: var(--site-accent);
     text-decoration: none;
   }
+
+  &[aria-current] {
+    color: var(--site-ink);
+  }
+}
+
+.current {
+  padding: rem(1px) rem(7px);
+  border: 1px solid color-mix(in srgb, var(--site-accent) 40%, transparent);
+  border-radius: rem(999px);
+  color: var(--site-accent);
+  font-size: rem(10px);
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.credit {
+  color: var(--site-accent);
 }
 
 .bottom {
