@@ -11,10 +11,10 @@ import { EngravedDivider } from '@/components/EngravedDivider/EngravedDivider';
 import { Link } from '@/components/Link/Link';
 import config from '@/config';
 import { site } from '@/config/site';
-import { HUB_URL, templateList } from '@/config/templates';
+import { HUB_URL } from '@/config/templates';
 import type { DocsNode } from '@/lib/docs/types';
 import packageJson from '../../../package.json';
-import { resources } from '../../MantineFooter/links';
+import { resources, templateLinks } from '../../MantineFooter/links';
 import classes from './DocsFooter.module.css';
 
 interface FooterLink {
@@ -27,12 +27,7 @@ interface FooterLink {
 
 /** The three sibling templates at their live demos, then the Hub: as in the site footer. */
 const TEMPLATES: FooterLink[] = [
-  ...templateList.map((template) => ({
-    key: template.key,
-    title: `Mantine + ${template.engine}`,
-    href: template.demo,
-    current: template.key === site.key,
-  })),
+  ...templateLinks,
   { key: 'hub', title: 'Mantine Extensions Hub', href: HUB_URL },
 ];
 
