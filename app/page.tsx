@@ -1,14 +1,6 @@
-import { Container } from '@mantine/core';
-import { ColorSchemeToggle } from '@/components/ColorSchemeToggle/ColorSchemeToggle';
-import { Content } from '@/components/Content/Content';
-import { Welcome } from '@/components/Welcome/Welcome';
+import { HomePage } from '@/components/Home/HomePage';
 
-export default function HomePage() {
-  return (
-    <Container flex={1} w="100%">
-      <Welcome />
-      <ColorSchemeToggle />
-      <Content />
-    </Container>
-  );
+// The shell's AppShell.Main is the page's <main>.
+export default function Page() {
+  return <HomePage />;
 }
