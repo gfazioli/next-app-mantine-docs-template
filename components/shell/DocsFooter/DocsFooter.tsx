@@ -72,7 +72,7 @@ function Column({
           <Anchor
             href={link.href}
             className={classes.link}
-            aria-current={link.current ? 'page' : undefined}
+            aria-current={link.current ? 'true' : undefined}
             {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : { component: Link })}
           >
             {link.title}
