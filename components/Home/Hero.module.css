@@ -118,6 +118,12 @@
   background-image: linear-gradient(100deg, var(--engine-from) 10%, var(--engine-to) 90%);
   background-clip: text;
   color: transparent;
+
+  /* High contrast drops background images, and with them text painted by background-clip. */
+  @media (forced-colors: active) {
+    background: none;
+    color: CanvasText;
+  }
 }
 
 .lead {

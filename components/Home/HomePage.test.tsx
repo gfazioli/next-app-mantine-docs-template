@@ -70,9 +70,8 @@ describe('HomePage', () => {
   });
 
   it('shows the live numbers it is given', () => {
-    render(
-      <HomePage stats={{ stars: { docs: 1, nextra: 38, fumadocs: 5 }, downloads: 309_494 }} />
-    );
+    const stars = { docs: 1, nextra: 38, fumadocs: 5 };
+    render(<HomePage stats={{ stars, downloads: 309_494 }} />);
     const section = screen.getByRole('region', { name: /Pick the engine/ });
     // The figure, and the words a screen reader hears after it
     expect(within(section).getByText('1')).toHaveTextContent('1 star on GitHub');
@@ -81,7 +80,9 @@ describe('HomePage', () => {
     // The hero's star link carries this template's own count
     const star = screen.getByRole('link', { name: /^Star the .+ template on GitHub/ });
     expect(star).toHaveAttribute('href', `https://github.com/${site.repo}`);
-    expect(star).toHaveTextContent(/GitHub\s*1 star$/);
+    // The same file runs in the three templates: the figure is this template's own
+    const own = stars[site.key];
+    expect(star).toHaveTextContent(new RegExp(`GitHub\\s*${own} ${own === 1 ? 'star' : 'stars'}$`));
     const extensions = screen.getByRole('region', { name: /extensions/ });
     expect(within(extensions).getByText('309k')).toBeInTheDocument();
     expect(extensions).toHaveTextContent('309k downloads last month');
