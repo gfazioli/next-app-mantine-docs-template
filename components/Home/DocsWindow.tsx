@@ -19,13 +19,22 @@ const BEAM = [
 
 /**
  * What the template gives you, drawn rather than photographed: a docs page (sidebar, article,
- * code, table of contents) tilted in space, made of markup and CSS. No image to download, and it
- * follows the colour scheme. Decorative, so hidden from assistive tech.
+ * code, table of contents) tilted in space, made of markup and CSS, and dimensioned like a part
+ * on a drawing: a line along its width and one along its height, two callouts, and the plane it
+ * stands on. No image to download, and it follows the colour scheme. Decorative, so hidden from
+ * assistive tech.
  */
 export function DocsWindow() {
   return (
     <div className={classes.stage} aria-hidden="true">
+      <div className={classes.floor} />
       <div className={classes.tilt}>
+        <span className={classes.dim} data-axis="x">
+          <b>720 px</b>
+        </span>
+        <span className={classes.dim} data-axis="y">
+          <b>450 px</b>
+        </span>
         <BorderAnimate
           variant="beam"
           beamMode="wedge"
