@@ -7,13 +7,14 @@ import home from './Home.module.css';
 const NAV = ['Getting started', 'Markdown', 'Mantine', 'Components', 'Guides', 'Release notes'];
 const TOC = ['Install', 'Write a page', 'Add a component', 'Deploy'];
 
-/* A light that runs round the window's rim: a conic gradient the extension turns with a
-   transform, so the only thing animated is a rotation on the compositor. */
+/* A light that runs round the window's rim, in the template's own two colours: a conic gradient
+   the extension turns with a transform, so the only thing animated is a rotation on the
+   compositor. */
 const BEAM = [
   { color: 'transparent', position: 0 },
   { color: 'transparent', position: 62 },
-  { color: 'blue.5', position: 82 },
-  { color: 'cyan.4', position: 94 },
+  { color: site.beam[0], position: 82 },
+  { color: site.beam[1], position: 94 },
   { color: 'transparent', position: 100 },
 ];
 

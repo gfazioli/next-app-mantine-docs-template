@@ -10,21 +10,13 @@ import { Link } from '@/components/Link/Link';
 import { RENDER_LATER, revealItem } from '@/components/Motion/reveal-props';
 import { RevealScope } from '@/components/Motion/RevealScope';
 import { site } from '@/config/site';
-import { templateList, type Template, type TemplateKey } from '@/config/templates';
+import { templateList, type Template } from '@/config/templates';
 import home from './Home.module.css';
 import classes from './Templates.module.css';
 import { SectionHeader } from './SectionHeader';
 import { compactCount } from './stats';
 import { Sketch } from './Sketch';
 import type { HomeStats } from './stats';
-
-/* The light on the current card's rim, in that engine's colours: a conic gradient the extension
-   turns with a transform. */
-const BEAMS: Record<TemplateKey, [string, string]> = {
-  docs: ['blue.5', 'cyan.4'],
-  nextra: ['violet.5', 'pink.4'],
-  fumadocs: ['orange.5', 'pink.5'],
-};
 
 function Card({
   template,
@@ -123,7 +115,9 @@ export function Templates({ stars = {} }: { stars?: HomeStats['stars'] }) {
       <RevealScope as="ul" className={`${home.marks} ${classes.grid}`}>
         {templateList.map((template, i) => {
           const current = template.key === site.key;
-          const [from, to] = BEAMS[template.key];
+          // The light on the current card's rim, in that engine's colours: a conic gradient
+          // the extension turns with a transform.
+          const [from, to] = template.beam;
           return (
             <li key={template.key} {...revealItem('card', 90 * i)}>
               {current ? (

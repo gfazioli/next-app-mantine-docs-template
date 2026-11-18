@@ -22,8 +22,8 @@ import classes from './Home.module.css';
  * (`RenderLater`): the hero paints sooner on a slow phone. It renders no
  * `<main>` of its own, since one engine's layout already provides it: `app/page.tsx` does.
  *
- * `data-site-paper` is what turns the document to blueprint paper, header and footer included:
- * see theme/site.css.
+ * `data-site-paper` is what turns the document to drawing paper, header and footer included, and
+ * its value is which paper (`site.paper`: blue, violet or orange): see theme/site.css.
  *
  * `badge` is a slot under the hero's actions, for a launch badge. `stats` are the live numbers
  * (GitHub stars, npm downloads): the page component awaits `getHomeStats()` and passes them in,
@@ -38,7 +38,7 @@ export function HomePage({
   stats?: HomeStats;
 }) {
   return (
-    <div className={classes.page} data-site-paper="">
+    <div className={classes.page} data-site-paper={site.paper}>
       <div className={classes.frame}>
         <Hero badge={badge} stars={stats.stars[site.key]} />
         <Stack />

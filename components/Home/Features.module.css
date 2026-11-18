@@ -58,7 +58,7 @@
   pointer-events: none;
 }
 
-/* The icon in a tile of Mantine's light blue. */
+/* The icon in a tile tinted with the paper's ink: on blue paper, Mantine's light blue. */
 .icon {
   display: grid;
   place-items: center;
@@ -66,7 +66,7 @@
   height: rem(42px);
   border: 1px solid color-mix(in srgb, var(--site-accent) 30%, transparent);
   border-radius: rem(10px);
-  background: var(--mantine-color-blue-light);
+  background: var(--site-tint);
   color: var(--site-accent);
 }
 

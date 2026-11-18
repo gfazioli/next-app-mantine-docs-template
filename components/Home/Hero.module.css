@@ -23,6 +23,9 @@
   &[data-engine='nextra'] {
     --engine-from: light-dark(var(--mantine-color-violet-8), var(--mantine-color-violet-4));
     --engine-to: light-dark(var(--mantine-color-grape-7), var(--mantine-color-pink-4));
+    /* "+ Nextra template" is a few pixels wider than the column at full size: a step smaller,
+       and the headline keeps its two lines. */
+    --title-max: rem(68px);
   }
 
   &[data-engine='fumadocs'] {
@@ -96,7 +99,7 @@
 .pillTag {
   padding: rem(2px) rem(9px);
   border-radius: rem(999px);
-  background: var(--mantine-color-blue-8);
+  background: var(--site-fill);
   color: var(--mantine-color-white);
   font-family: var(--mantine-font-family-monospace);
   font-size: rem(12px);
@@ -106,7 +109,7 @@
 .title {
   margin: 0;
   color: var(--site-ink);
-  font-size: clamp(rem(42px), 5.6vw, rem(72px));
+  font-size: clamp(rem(42px), 5.6vw, var(--title-max, rem(72px)));
   font-weight: 600;
   line-height: 1.02;
   letter-spacing: -0.04em;
@@ -183,7 +186,7 @@
 .starCount {
   padding-inline: rem(10px);
   border-left: 1px solid var(--site-frame);
-  background: var(--mantine-color-blue-light);
+  background: var(--site-tint);
   font-family: var(--mantine-font-family-monospace);
   font-weight: 500;
 }

@@ -251,11 +251,11 @@
   flex: none;
   padding: rem(3px) rem(9px);
   border-left: 1px solid var(--site-frame);
-  background: var(--mantine-color-blue-light);
+  background: var(--site-tint);
   color: var(--site-text);
 }
 
-/* Our own extensions, picked out in Mantine's blue. */
+/* Our own extensions, picked out in the paper's ink. */
 .tag[data-own] {
   border-color: var(--site-mark);
 
