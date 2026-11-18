@@ -14,10 +14,20 @@ function mockFetch(answer: (url: string) => Response | Promise<Response>) {
 }
 
 const realFetch = global.fetch;
+const realToken = process.env.GITHUB_TOKEN;
+
+// Every test starts without a token, whatever the shell running the suite exports.
+beforeEach(() => {
+  delete process.env.GITHUB_TOKEN;
+});
 
 afterEach(() => {
   global.fetch = realFetch;
-  delete process.env.GITHUB_TOKEN;
+  if (realToken === undefined) {
+    delete process.env.GITHUB_TOKEN;
+  } else {
+    process.env.GITHUB_TOKEN = realToken;
+  }
 });
 
 describe('getHomeStats', () => {

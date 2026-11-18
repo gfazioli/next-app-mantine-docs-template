@@ -185,6 +185,12 @@
   );
   background-clip: text;
   color: transparent;
+
+  /* High contrast drops background images, and with them text painted by background-clip. */
+  @media (forced-colors: active) {
+    background: none;
+    color: CanvasText;
+  }
 }
 
 /* The page's buttons are Mantine's: these only add the lift and the two looks. */
