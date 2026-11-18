@@ -9,7 +9,7 @@ A [Next.js](https://nextjs.org/) App Router template for MDX documentation sites
 
 **The engine is our own**: there is no documentation framework in between. The pages are compiled by [`@next/mdx`](https://nextjs.org/docs/app/guides/mdx), the MDX loader Next.js maintains itself, and every piece of the interface (sidebar, table of contents, search, code blocks) is a Mantine component that lives in this repository.
 
-**[Live demo](https://next-app-mantine-docs-template.vercel.app/)** · [Documentation](https://next-app-mantine-docs-template.vercel.app/docs) · [Release notes](https://github.com/gfazioli/next-app-mantine-docs-template/releases) · [Mantine Extensions Hub](https://mantine-extensions.vercel.app/)
+**[Live demo](https://next-app-mantine-docs-template.vercel.app/)** · [▶ 30-second video](https://www.youtube.com/watch?v=k_m9lAHj6Hg) · [Documentation](https://next-app-mantine-docs-template.vercel.app/docs) · [Release notes](https://github.com/gfazioli/next-app-mantine-docs-template/releases) · [Mantine Extensions Hub](https://mantine-extensions.vercel.app/)
 
 <div align="center">
 
