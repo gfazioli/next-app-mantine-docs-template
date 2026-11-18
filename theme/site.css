@@ -9,10 +9,13 @@
  * - `--site-frame`    the page's construction lines.
  * - `--site-rule`     hairlines and card edges.
  * - `--site-surface`  a card.
+ * - `--site-card`     a card laid on the paper: the surface at 72%, so the grid shows through.
  * - `--site-sunken`   code and wells.
- * - `--site-glow`     the light painted behind a section: blue, and cyan beside it.
+ * - `--site-glow`     the light painted behind a drawing.
  * - `--site-footer`   the footer's ground, a step away from the page.
  * - `--site-gradient-*` the two ends of a heading's coloured words: Mantine's blue to cyan.
+ * - `--site-grid-*`   the graph paper's fine and heavy lines.
+ * - `--site-mark`     the registration marks at a drawing's corners, and its dimension lines.
  */
 body {
   --site-ink: light-dark(#0b1c2e, var(--mantine-color-white));
@@ -21,14 +24,16 @@ body {
   --site-frame: light-dark(rgb(11 28 46 / 14%), rgb(255 255 255 / 14%));
   --site-rule: light-dark(rgb(11 28 46 / 9%), rgb(255 255 255 / 9%));
   --site-surface: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
+  --site-card: color-mix(in srgb, var(--site-surface) 72%, transparent);
   --site-sunken: light-dark(#f4f8fc, var(--mantine-color-dark-8));
   --site-glow: light-dark(var(--mantine-color-blue-4), var(--mantine-color-blue-7));
-  --site-glow-alt: light-dark(var(--mantine-color-cyan-3), var(--mantine-color-cyan-8));
   --site-footer: light-dark(#f0f5fa, var(--mantine-color-dark-8));
   --site-shadow: light-dark(rgb(11 28 46 / 18%), rgb(0 0 0 / 55%));
-  --site-card-shadow: 0 1px 2px rgb(11 28 46 / 5%);
   --site-gradient-from: light-dark(var(--mantine-color-blue-8), var(--mantine-color-blue-4));
   --site-gradient-to: light-dark(var(--mantine-color-cyan-8), var(--mantine-color-cyan-3));
+  --site-grid-minor: light-dark(rgb(11 28 46 / 4%), rgb(255 255 255 / 4%));
+  --site-grid-major: light-dark(rgb(11 28 46 / 8%), rgb(255 255 255 / 8%));
+  --site-mark: var(--site-accent);
 
   /* A spring sampled into linear(): it lands a little past its place and settles. */
   --site-spring: linear(
@@ -63,4 +68,57 @@ body {
     1
   );
   --site-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/*
+ * The paper. A page that carries `data-site-paper` (the home page) is a blueprint: the whole
+ * document, its header and its footer included, takes a pale blue drawing paper in light and a
+ * deep navy in dark, and the tokens above are redrawn in blue ink. Every other page keeps
+ * Mantine's own colours. Written out per scheme: these selectors start at the root, where
+ * `light-dark()` cannot be compiled.
+ *
+ * Contrast on the paper, a card and the footer: `--site-text` 6.2:1 or more, `--site-accent`
+ * 4.8:1 or more, in both schemes. Mantine's dimmed grey (the header's links) would fall to
+ * 2.9:1 on the light paper: it is redrawn too, at 5:1 or more.
+ */
+:root[data-mantine-color-scheme='light']:has([data-site-paper]) {
+  --mantine-color-body: #e7eff9;
+  --mantine-color-dimmed: #56667c;
+}
+
+:root[data-mantine-color-scheme='dark']:has([data-site-paper]) {
+  --mantine-color-body: #0a1a30;
+  --mantine-color-dimmed: #8fa0b8;
+  --mantine-color-default: #102543;
+  --mantine-color-default-hover: #16305a;
+  --mantine-color-default-border: #27456f;
+}
+
+:root[data-mantine-color-scheme='light']:has([data-site-paper]) body {
+  --site-text: #41536b;
+  --site-accent: var(--mantine-color-blue-9);
+  --site-frame: rgb(24 100 171 / 32%);
+  --site-rule: rgb(24 100 171 / 17%);
+  --site-surface: var(--mantine-color-white);
+  --site-sunken: #f1f6fc;
+  --site-glow: var(--mantine-color-white);
+  --site-footer: #dbe6f4;
+  --site-shadow: rgb(16 62 110 / 28%);
+  --site-grid-minor: rgb(24 100 171 / 6%);
+  --site-grid-major: rgb(24 100 171 / 11%);
+  --site-mark: rgb(24 100 171 / 70%);
+}
+
+:root[data-mantine-color-scheme='dark']:has([data-site-paper]) body {
+  --site-text: #b3c3da;
+  --site-frame: rgb(116 192 252 / 30%);
+  --site-rule: rgb(116 192 252 / 16%);
+  --site-surface: #102543;
+  --site-sunken: #07142a;
+  --site-glow: var(--mantine-color-blue-7);
+  --site-footer: #061224;
+  --site-shadow: rgb(0 8 20 / 70%);
+  --site-grid-minor: rgb(116 192 252 / 5%);
+  --site-grid-major: rgb(116 192 252 / 10%);
+  --site-mark: rgb(116 192 252 / 75%);
 }
