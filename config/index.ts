@@ -61,6 +61,12 @@ export default {
     sidebar: {
       /** Folders deeper than this open only when they hold the current page */
       defaultMenuCollapseLevel: 1,
+      /**
+       * Where the button that hides the sidebar on desktop sits (⌘B / Ctrl+B works either way):
+       * `header`, left of the logo, or `sidebar`, at its foot beside the colour scheme, as on the
+       * Nextra sites; a collapsed sidebar is then brought back from the header.
+       */
+      toggle: 'header' as 'header' | 'sidebar',
     },
   },
   /**
@@ -79,6 +85,8 @@ export default {
     discord: 'https://discord.com/invite/wbH82zuWMN',
     /** The Discord link's tooltip and accessible name, in the header and the sidebar */
     discordLabel: 'Mantine Discord server',
+    /** The GitHub icon in the header and at the foot of the sidebar: a page every visitor can open */
+    github: 'https://github.com/gfazioli/next-app-mantine-docs-template',
     twitter: 'https://twitter.com/gfazioli',
     coffee: 'https://donate.stripe.com/fZu4gy4Tn3b1dgudGx0co00',
     author: 'https://gfazioli.github.io/',
