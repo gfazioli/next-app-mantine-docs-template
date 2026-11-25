@@ -15,9 +15,9 @@ function dialog(selected?: number) {
   return { input: document.querySelector('input')!, actions };
 }
 
-function press(input: HTMLInputElement, code: string) {
+function press(input: HTMLInputElement, code: string, isComposing = false) {
   selectFirstOnEnter({
-    nativeEvent: { code },
+    nativeEvent: { code, isComposing },
     currentTarget: input,
   } as unknown as React.KeyboardEvent<HTMLInputElement>);
 }
@@ -35,6 +35,12 @@ describe('selectFirstOnEnter', () => {
     press(input, 'NumpadEnter');
     expect(actions[0].hasAttribute('data-selected')).toBe(false);
     expect(actions[1].hasAttribute('data-selected')).toBe(true);
+  });
+
+  it('leaves the Enter that commits a composition alone', () => {
+    const { input, actions } = dialog();
+    press(input, 'Enter', true);
+    expect(actions[0].hasAttribute('data-selected')).toBe(false);
   });
 
   it('ignores every other key', () => {

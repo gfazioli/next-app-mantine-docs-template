@@ -11,6 +11,11 @@ export function selectFirstOnEnter(event: React.KeyboardEvent<HTMLInputElement>)
   if (event.nativeEvent.code !== 'Enter' && event.nativeEvent.code !== 'NumpadEnter') {
     return;
   }
+  // The Enter that commits an input method's composition (Chinese, Japanese, Korean) is not a
+  // search: Spotlight ignores it too.
+  if (event.nativeEvent.isComposing) {
+    return;
+  }
   const scope = event.currentTarget.closest('[role="dialog"]') ?? document;
   if (!scope.querySelector('[data-action][data-selected]')) {
     scope.querySelector('[data-action]')?.setAttribute('data-selected', 'true');

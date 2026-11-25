@@ -91,7 +91,7 @@ const SOCIAL = [
     icon: <IconBrandGithub size={18} stroke={1.5} />,
   },
   {
-    label: 'Mantine Discord server',
+    label: config.links.discordLabel,
     href: config.links.discord,
     icon: <IconBrandDiscord size={18} stroke={1.5} />,
   },
