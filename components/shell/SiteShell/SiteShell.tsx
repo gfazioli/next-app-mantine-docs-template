@@ -125,9 +125,23 @@ export function SiteShell({ tree, nav, banner, docsFooter, siteFooter, children 
   useEffect(() => {
     const target = refocus.current;
     refocus.current = null;
-    if (target) {
-      document.querySelector<HTMLElement>(`[data-sidebar-toggle="${target}"]`)?.focus();
+    const button =
+      target && document.querySelector<HTMLElement>(`[data-sidebar-toggle="${target}"]`);
+    if (!button) {
+      return undefined;
     }
+    // An opening sidebar turns visible a frame or so later (its visibility is transitioned), and
+    // a hidden button takes no focus: try once a frame until it does, for a few frames at most.
+    let frame = 0;
+    let tries = 10;
+    const focus = () => {
+      button.focus();
+      if (document.activeElement !== button && --tries > 0) {
+        frame = requestAnimationFrame(focus);
+      }
+    };
+    focus();
+    return () => cancelAnimationFrame(frame);
   }, [sidebarCollapsed]);
   useHotkeys(isDocs ? [['mod+B', toggleSidebar]] : []);
 
