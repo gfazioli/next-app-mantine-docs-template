@@ -77,6 +77,8 @@ export default {
    */
   links: {
     discord: 'https://discord.com/invite/wbH82zuWMN',
+    /** The Discord link's tooltip and accessible name, in the header and the sidebar */
+    discordLabel: 'Mantine Discord server',
     twitter: 'https://twitter.com/gfazioli',
     coffee: 'https://donate.stripe.com/fZu4gy4Tn3b1dgudGx0co00',
     author: 'https://gfazioli.github.io/',

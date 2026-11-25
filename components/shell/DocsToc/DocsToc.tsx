@@ -58,7 +58,6 @@ export function DocsToc({ editUrl }: DocsTocProps) {
           </Group>
           <TableOfContents
             variant="light"
-            color="blue"
             size="sm"
             radius="sm"
             minDepthToOffset={2}

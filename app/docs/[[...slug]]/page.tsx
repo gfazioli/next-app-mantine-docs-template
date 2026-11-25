@@ -21,13 +21,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     notFound();
   }
   const { frontmatter = {}, metadata = {} } = await loadPageModule(page);
+  const description =
+    (metadata.description as string | undefined) ?? (frontmatter.description as string | undefined);
 
+  // `description` only when the page has one: Next.js turns an explicit `undefined` into `null`,
+  // which replaced the site's description (config.metadata) instead of inheriting it, so a page
+  // without front matter shipped none at all.
   return {
     ...metadata,
     title: (metadata.title as string | undefined) ?? page.title,
-    description:
-      (metadata.description as string | undefined) ??
-      (frontmatter.description as string | undefined),
+    ...(description ? { description } : {}),
   };
 }
 

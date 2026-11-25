@@ -11,10 +11,11 @@
   height: var(--site-banner-height);
   padding-inline: rem(44px);
   color: var(--mantine-color-white);
-  background-image: linear-gradient(
-    90deg,
-    var(--mantine-color-blue-7),
-    var(--mantine-color-violet-7)
+  /* A site with its own colours sets --site-banner-background in its theme CSS, rather than
+     editing this file. */
+  background: var(
+    --site-banner-background,
+    linear-gradient(90deg, var(--mantine-color-blue-7), var(--mantine-color-violet-7))
   );
 
   :global([data-banner-dismissed]) & {

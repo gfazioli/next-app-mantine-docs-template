@@ -7,6 +7,7 @@ import { Group, Kbd, Loader, Mark, Stack, Text } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 import { Spotlight } from '@mantine/spotlight';
 import { loadPagefind, toRouterUrl, type PagefindResultData } from './pagefind';
+import { selectFirstOnEnter } from './select-first-on-enter';
 import classes from './DocsSearch.module.css';
 
 const MAX_PAGES = 8;
@@ -92,6 +93,7 @@ export function DocsSearch() {
     >
       <Spotlight.Search
         placeholder="Search documentation..."
+        onKeyDown={selectFirstOnEnter}
         leftSection={
           state.status === 'loading' ? <Loader size={18} /> : <IconSearch size={18} stroke={1.5} />
         }
