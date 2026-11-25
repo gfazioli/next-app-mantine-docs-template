@@ -9,8 +9,6 @@ import {
   IconCoffee,
   IconExternalLink,
   IconHeartFilled,
-  IconLayoutSidebarLeftCollapse,
-  IconLayoutSidebarLeftExpand,
 } from '@tabler/icons-react';
 import {
   ActionIcon,
@@ -22,10 +20,10 @@ import {
   Tooltip,
   UnstyledButton,
 } from '@mantine/core';
-import { useOs } from '@mantine/hooks';
 import config from '@/config';
 import { isMenu, type TopNavEntry } from '@/lib/docs/types';
 import { SearchTrigger } from '../shell/SearchTrigger/SearchTrigger';
+import { SidebarToggle, type SidebarToggleProps } from '../shell/SidebarToggle/SidebarToggle';
 import { ColorSchemeControl } from '../ColorSchemeControl/ColorSchemeControl';
 import { HeaderControl } from '../ColorSchemeControl/HeaderControl';
 import { Logo } from '../Logo/Logo';
@@ -37,33 +35,8 @@ export interface MantineNavBarProps {
   /** The mobile menu button, which opens the sidebar */
   burgerOpened: boolean;
   onBurgerClick: () => void;
-  /** The desktop sidebar toggle, on docs routes */
-  sidebar?: { collapsed: boolean; onToggle: () => void };
-}
-
-function SidebarToggle({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
-  const shortcut = useOs() === 'macos' ? '⌘B' : 'Ctrl+B';
-  const label = collapsed ? 'Show the sidebar' : 'Hide the sidebar';
-
-  return (
-    <Tooltip label={`${label} (${shortcut})`}>
-      <ActionIcon
-        variant="subtle"
-        color="gray"
-        size="lg"
-        visibleFrom="md"
-        onClick={onToggle}
-        aria-label={label}
-        aria-expanded={!collapsed}
-      >
-        {collapsed ? (
-          <IconLayoutSidebarLeftExpand size={20} stroke={1.5} />
-        ) : (
-          <IconLayoutSidebarLeftCollapse size={20} stroke={1.5} />
-        )}
-      </ActionIcon>
-    </Tooltip>
-  );
+  /** The desktop sidebar toggle, on docs routes when the site keeps it in the header */
+  sidebar?: SidebarToggleProps;
 }
 
 function TopNav({ nav }: { nav: TopNavEntry[] }) {
@@ -174,7 +147,7 @@ export function MantineNavBar({ nav, burgerOpened, onBurgerClick, sidebar }: Man
         <Tooltip label="GitHub">
           <ActionIcon
             component="a"
-            href={`https://github.com/${config.gitHub.repo}`}
+            href={config.links.github}
             target="_blank"
             rel="noopener noreferrer"
             variant="subtle"
