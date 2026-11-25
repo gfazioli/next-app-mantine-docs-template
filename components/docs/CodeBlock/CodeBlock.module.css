@@ -19,6 +19,6 @@
 }
 
 .root :global(.line.highlighted) {
-  background-color: var(--mantine-color-blue-light);
-  box-shadow: inset 2px 0 0 var(--mantine-color-blue-filled);
+  background-color: var(--mantine-primary-color-light);
+  box-shadow: inset 2px 0 0 var(--mantine-primary-color-filled);
 }

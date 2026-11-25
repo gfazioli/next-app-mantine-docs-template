@@ -156,7 +156,7 @@ export function MantineNavBar({ nav, burgerOpened, onBurgerClick, sidebar }: Man
 
         <SearchTrigger />
 
-        <Tooltip label="Mantine Discord server">
+        <Tooltip label={config.links.discordLabel}>
           <ActionIcon
             component="a"
             href={config.links.discord}
@@ -164,7 +164,7 @@ export function MantineNavBar({ nav, burgerOpened, onBurgerClick, sidebar }: Man
             rel="noopener noreferrer"
             variant="subtle"
             color="gray"
-            aria-label="Mantine Discord server"
+            aria-label={config.links.discordLabel}
             visibleFrom="sm"
           >
             <IconBrandDiscord size={20} stroke={1.5} />

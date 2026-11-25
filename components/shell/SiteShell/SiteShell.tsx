@@ -114,6 +114,11 @@ export function SiteShell({ tree, nav, banner, docsFooter, siteFooter, children 
       }}
       classNames={{ header: classes.header, navbar: classes.navbar }}
     >
+      {/* First in the tab order, shown only while it has focus: past the header and the sidebar
+          in one press, as Nextra's "Skip to Content" did. */}
+      <a href="#main-content" className={classes.skipLink}>
+        Skip to content
+      </a>
       <AppShell.Header>
         {banner}
         <MantineNavBar
@@ -124,7 +129,14 @@ export function SiteShell({ tree, nav, banner, docsFooter, siteFooter, children 
         />
       </AppShell.Header>
 
-      <AppShell.Navbar data-desktop-collapsed={desktopCollapsed || undefined}>
+      <AppShell.Navbar
+        data-desktop-collapsed={desktopCollapsed || undefined}
+        data-mobile-collapsed={!opened || undefined}
+        // A link that stays on the page (a `#` anchor, say a sponsors section) changes no
+        // pathname, and left the phone's full-width navbar open over the place it scrolled to.
+        // Any link closes it; folders and menus are buttons, so they open and close in place.
+        onClick={(event) => (event.target as HTMLElement).closest('a[href]') && close()}
+      >
         <AppShell.Section hiddenFrom="md" className={classes.mobileNav}>
           <MobileNav nav={nav} />
         </AppShell.Section>
@@ -160,7 +172,7 @@ export function SiteShell({ tree, nav, banner, docsFooter, siteFooter, children 
                   variant="subtle"
                   color="gray"
                   size="sm"
-                  aria-label="Mantine Discord server"
+                  aria-label={config.links.discordLabel}
                 >
                   <IconBrandDiscord size={16} stroke={1.5} />
                 </ActionIcon>
@@ -171,7 +183,7 @@ export function SiteShell({ tree, nav, banner, docsFooter, siteFooter, children 
         </AppShell.Section>
       </AppShell.Navbar>
 
-      <AppShell.Main className={classes.main}>
+      <AppShell.Main id="main-content" className={classes.main}>
         {children}
         {isDocs ? docsFooter : siteFooter}
       </AppShell.Main>
