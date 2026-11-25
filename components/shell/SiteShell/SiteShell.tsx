@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { usePathname, useSelectedLayoutSegment } from 'next/navigation';
 import { IconBrandDiscord, IconBrandGithub } from '@tabler/icons-react';
 import {
@@ -108,10 +108,27 @@ export function SiteShell({ tree, nav, banner, docsFooter, siteFooter, children 
     }
   }, [sidebarCollapsed]);
 
-  const toggleSidebar = useCallback(
-    () => setSidebarCollapsed((collapsed) => !collapsed),
-    [setSidebarCollapsed]
-  );
+  // With the toggle at the foot of the sidebar there are two buttons, and the one pressed goes out
+  // of view: the keyboard focus moves to the other, instead of falling to the page.
+  const togglePlacement = config.docs.sidebar.toggle;
+  const refocus = useRef<string | null>(null);
+  const toggleSidebar = useCallback(() => {
+    const from = document.activeElement?.closest<HTMLElement>('[data-sidebar-toggle]');
+    refocus.current =
+      togglePlacement === 'sidebar' && from
+        ? from.dataset.sidebarToggle === 'header'
+          ? 'sidebar'
+          : 'header'
+        : null;
+    setSidebarCollapsed((collapsed) => !collapsed);
+  }, [setSidebarCollapsed, togglePlacement]);
+  useEffect(() => {
+    const target = refocus.current;
+    refocus.current = null;
+    if (target) {
+      document.querySelector<HTMLElement>(`[data-sidebar-toggle="${target}"]`)?.focus();
+    }
+  }, [sidebarCollapsed]);
   useHotkeys(isDocs ? [['mod+B', toggleSidebar]] : []);
 
   const desktopCollapsed = !isDocs || sidebarCollapsed;
@@ -121,13 +138,6 @@ export function SiteShell({ tree, nav, banner, docsFooter, siteFooter, children 
   const theme = useMantineTheme();
   const isDesktop = useMediaQuery(`(min-width: ${theme.breakpoints.md})`);
   const sidebarVisible = isDesktop ? !desktopCollapsed : opened;
-
-  // The desktop toggle, on docs pages: in the header, or at the foot of the sidebar
-  // (`config.docs.sidebar.toggle`), where a collapsed sidebar cannot show it, so the header does.
-  const sidebarToggle = isDocs
-    ? { collapsed: sidebarCollapsed, onToggle: toggleSidebar }
-    : undefined;
-  const toggleInHeader = config.docs.sidebar.toggle === 'header' || sidebarCollapsed;
 
   return (
     <AppShell
@@ -144,13 +154,21 @@ export function SiteShell({ tree, nav, banner, docsFooter, siteFooter, children 
       <a href="#main-content" className={classes.skipLink}>
         Skip to content
       </a>
-      <AppShell.Header>
+      {/* The desktop toggle, on docs pages, in the header or at the foot of the sidebar
+          (`config.docs.sidebar.toggle`). At the foot, the header's is there to bring a collapsed
+          sidebar back: always rendered, hidden by CSS while the sidebar is open, so a stored
+          "collapsed" shows it from the first paint (SiteShell.module.css). */}
+      <AppShell.Header data-toggle={togglePlacement} data-collapsed={sidebarCollapsed || undefined}>
         {banner}
         <MantineNavBar
           nav={nav}
           burgerOpened={opened}
           onBurgerClick={toggle}
-          sidebar={toggleInHeader ? sidebarToggle : undefined}
+          sidebar={
+            isDocs
+              ? { collapsed: sidebarCollapsed, onToggle: toggleSidebar, placement: 'header' }
+              : undefined
+          }
         />
       </AppShell.Header>
 
@@ -206,7 +224,13 @@ export function SiteShell({ tree, nav, banner, docsFooter, siteFooter, children 
             </Group>
             <Group gap={4}>
               <ColorSchemeControl />
-              {sidebarToggle && !toggleInHeader && <SidebarToggle {...sidebarToggle} />}
+              {isDocs && togglePlacement === 'sidebar' && (
+                <SidebarToggle
+                  collapsed={sidebarCollapsed}
+                  onToggle={toggleSidebar}
+                  placement="sidebar"
+                />
+              )}
             </Group>
           </Group>
         </AppShell.Section>

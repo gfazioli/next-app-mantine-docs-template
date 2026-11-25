@@ -87,7 +87,7 @@ function Column({
 const SOCIAL = [
   {
     label: 'GitHub repository',
-    href: `https://github.com/${config.gitHub.repo}`,
+    href: config.links.github,
     icon: <IconBrandGithub size={18} stroke={1.5} />,
   },
   {

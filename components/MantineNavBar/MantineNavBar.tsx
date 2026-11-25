@@ -23,7 +23,7 @@ import {
 import config from '@/config';
 import { isMenu, type TopNavEntry } from '@/lib/docs/types';
 import { SearchTrigger } from '../shell/SearchTrigger/SearchTrigger';
-import { SidebarToggle } from '../shell/SidebarToggle/SidebarToggle';
+import { SidebarToggle, type SidebarToggleProps } from '../shell/SidebarToggle/SidebarToggle';
 import { ColorSchemeControl } from '../ColorSchemeControl/ColorSchemeControl';
 import { HeaderControl } from '../ColorSchemeControl/HeaderControl';
 import { Logo } from '../Logo/Logo';
@@ -36,7 +36,7 @@ export interface MantineNavBarProps {
   burgerOpened: boolean;
   onBurgerClick: () => void;
   /** The desktop sidebar toggle, on docs routes when the site keeps it in the header */
-  sidebar?: { collapsed: boolean; onToggle: () => void };
+  sidebar?: SidebarToggleProps;
 }
 
 function TopNav({ nav }: { nav: TopNavEntry[] }) {
