@@ -66,7 +66,7 @@ export default {
        * `header`, left of the logo, or `sidebar`, at its foot beside the colour scheme, as on the
        * Nextra sites; a collapsed sidebar is then brought back from the header.
        */
-      toggle: 'header' as 'header' | 'sidebar',
+      toggle: 'sidebar' as 'header' | 'sidebar',
     },
   },
   /**
