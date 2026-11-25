@@ -81,17 +81,6 @@ export function SiteShell({ tree, nav, banner, docsFooter, siteFooter, children 
   useEffect(() => {
     close();
   }, [pathname, close]);
-  // A link that stays on the page (a `#` anchor, say a sponsors section) changes no pathname, and
-  // left the phone's full-width navbar open over the place it scrolled to. Any link closes it;
-  // the folders and menus are buttons, so they still open and close in place.
-  const closeOnLink = useCallback(
-    (event: React.MouseEvent<HTMLElement>) => {
-      if ((event.target as HTMLElement).closest('a[href]')) {
-        close();
-      }
-    },
-    [close]
-  );
 
   const [sidebarCollapsed, setSidebarCollapsed] = useLocalStorage({
     key: SIDEBAR_COLLAPSED_KEY,
@@ -143,7 +132,10 @@ export function SiteShell({ tree, nav, banner, docsFooter, siteFooter, children 
       <AppShell.Navbar
         data-desktop-collapsed={desktopCollapsed || undefined}
         data-mobile-collapsed={!opened || undefined}
-        onClick={closeOnLink}
+        // A link that stays on the page (a `#` anchor, say a sponsors section) changes no
+        // pathname, and left the phone's full-width navbar open over the place it scrolled to.
+        // Any link closes it; folders and menus are buttons, so they open and close in place.
+        onClick={(event) => (event.target as HTMLElement).closest('a[href]') && close()}
       >
         <AppShell.Section hiddenFrom="md" className={classes.mobileNav}>
           <MobileNav nav={nav} />
