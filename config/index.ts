@@ -41,9 +41,9 @@ export default {
     other: {
       'msapplication-TileColor': '#fff',
     },
-    twitter: {
-      site: 'https://next-app-mantine-docs-template.vercel.app/',
-    },
+    // X card: `site` is an @handle (`site: '@handle'`), never a URL, so there is none here. A site
+    // that sets an image also sets `card: 'summary_large_image'`: Next serves `summary` otherwise.
+    twitter: {},
     alternates: {
       // https://github.com/vercel/next.js/discussions/50189#discussioncomment-10826632
       canonical: './',
