@@ -55,6 +55,18 @@ description: "What this page is about, in one sentence."
 
 A page can also export Next.js `metadata` itself, which wins over the front matter.
 
+## Images
+
+A Markdown image whose file the site holds is served by `next/image`, with its size and in the
+formats the browser takes, as Nextra did: a file next to the page, `![](./photo.png)`, or a file
+in `public/`, `![](/photo.png)`. Any other URL stays as written.
+
+```mdx copy
+![The template's cover](/mantine+nextjs+nextra-template.png)
+```
+
+![The template's cover](/mantine+nextjs+nextra-template.png)
+
 ## Imports
 
 A page imports what it needs, like any module: Mantine components, your own components from

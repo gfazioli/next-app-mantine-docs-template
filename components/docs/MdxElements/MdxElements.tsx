@@ -18,6 +18,7 @@ import {
   Title,
 } from '@mantine/core';
 import { Link } from '@/components/Link/Link';
+import { blurPlaceholder } from '../ImageZoom/blur-placeholder';
 import { GitHubAlert } from '../Callout/GitHubAlert';
 import { CodeBlock } from '../CodeBlock/CodeBlock';
 import classes from './MdxElements.module.css';
@@ -41,16 +42,28 @@ function heading(order: HeadingOrder) {
   };
 }
 
+/**
+ * A link in a page is underlined, not only on hover: in running text its colour alone is the
+ * only other cue, and Nextra underlined it too.
+ */
 function MdxLink({ href = '', children, ...others }: React.ComponentPropsWithoutRef<'a'>) {
-  if (/^(https?:)?\/\//.test(href) || href.startsWith('mailto:')) {
+  // A mail link opens the mail app: in a new tab it left an empty one behind, as Nextra's did not.
+  if (href.startsWith('mailto:')) {
     return (
-      <Anchor href={href} target="_blank" rel="noopener noreferrer" {...others}>
+      <Anchor underline="always" href={href} {...others}>
+        {children}
+      </Anchor>
+    );
+  }
+  if (/^(https?:)?\/\//.test(href)) {
+    return (
+      <Anchor underline="always" href={href} target="_blank" rel="noopener noreferrer" {...others}>
         {children}
       </Anchor>
     );
   }
   return (
-    <Anchor component={Link} href={href} {...others}>
+    <Anchor underline="always" component={Link} href={href} {...others}>
       {children}
     </Anchor>
   );
@@ -92,21 +105,35 @@ export const mdxElements: MDXComponents = {
   pre: CodeBlock,
   blockquote: GitHubAlert,
   hr: () => <Divider my="xl" />,
-  // A relative image (`![](./photo.png)`) arrives as an imported file (`remark-static-images`):
-  // `next/image` takes its size from it, and `h="auto"` keeps the ratio at the column's width
-  // (Mantine's `Image` is `object-fit: cover`, which cropped it to the height attribute).
-  img: ({ src, alt }) =>
+  // An image the site holds (`![](./photo.png)`, `![](/photo.png)`) arrives as an imported file
+  // (`remark-static-images`): `next/image` takes its size from it, paints its blurred preview
+  // first, and `h="auto"` keeps the ratio at the column's width (Mantine's `Image` is
+  // `object-fit: cover`, which cropped it to the height attribute). The first one of a page comes
+  // with `loading="eager"` and `fetchPriority="high"` (`remark-first-image-eager`).
+  img: ({ src, alt, title, loading, fetchPriority }) =>
     typeof src === 'object' && src !== null ? (
       <Image
         component={NextImage}
         src={src as StaticImageData}
         alt={alt ?? ''}
+        title={title}
         radius="md"
         my="md"
         h="auto"
+        loading={loading}
+        fetchPriority={fetchPriority}
+        placeholder={blurPlaceholder(src as StaticImageData)}
+        data-pagefind-index-attrs="title,alt"
       />
     ) : (
-      <Image src={typeof src === 'string' ? src : undefined} alt={alt ?? ''} radius="md" my="md" />
+      <Image
+        src={typeof src === 'string' ? src : undefined}
+        alt={alt ?? ''}
+        title={title}
+        radius="md"
+        my="md"
+        data-pagefind-index-attrs="title,alt"
+      />
     ),
   table: (props) => (
     <TableScrollContainer minWidth={500} my="md">
