@@ -20,6 +20,8 @@ const withBundleAnalyzer = bundleAnalyzer({
  * - `remark-smartypants`: curly quotes, dashes and real ellipses in the text, as Nextra set them
  *   (code is left alone).
  * - `remark-static-images`: a relative image, `![](./photo.png)`, becomes an import of the file.
+ * - `remark-first-image-eager`: the first picture of a page is loaded eagerly, with high priority
+ *   (it is usually the page's LCP); the others stay lazy.
  * - `rehype-slug`: an `id` on every heading, for the table of contents and for deep links.
  * - `rehype-code-meta`: keeps the fence meta (`filename="…" copy {4}`) on the `<pre>`, where the
  *   code block reads it. MDX drops it otherwise. A local plugin is given by its absolute path:
@@ -33,6 +35,7 @@ const withMDX = createMDX({
       fileURLToPath(new URL('./lib/mdx/remark-heading-ids.mjs', import.meta.url)),
       'remark-smartypants',
       fileURLToPath(new URL('./lib/mdx/remark-static-images.mjs', import.meta.url)),
+      fileURLToPath(new URL('./lib/mdx/remark-first-image-eager.mjs', import.meta.url)),
       'remark-frontmatter',
       ['remark-mdx-frontmatter', { name: 'frontmatter' }],
     ],
